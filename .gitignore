@@ -1,5 +1,7 @@
 node_modules
 .env
+!.env.vault
+!.env*.vault
 dist
 data
 .vscode
@@ -24,3 +26,9 @@ test
 *.db
 hits.json
 debug_*.log
+
+# Ansible Vault password files
+.vault_pass
+vault-password.sh
+.vault_password
+*.vault_key
