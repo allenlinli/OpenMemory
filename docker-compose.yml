@@ -5,8 +5,8 @@ services:
     build:
       context: ./packages/openmemory-js
       dockerfile: Dockerfile
-    ports:
-      - '8080:8080'
+    expose:
+      - "8080"
     environment:
       # Core Configuration
       - OM_PORT=${OM_PORT:-8080}
@@ -133,8 +133,8 @@ services:
     build:
       context: ./dashboard
       dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
+    expose:
+      - "3000"
     environment:
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8080}
       - NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY:-}
@@ -152,23 +152,22 @@ services:
   # Optional: Valkey for high-performance vector storage
   # Uncomment to use Valkey instead of SQLite/PostgreSQL for vectors
   # Don't forget to set OM_VECTOR_BACKEND=valkey in your .env
-  # valkey:
-  #   image: valkey/valkey:8.0
-  #   ports:
-  #     - '6379:6379'
-  #   volumes:
-  #     - valkey_data:/data
-  #   restart: unless-stopped
-  #   healthcheck:
-  #     test: ['CMD', 'valkey-cli', 'ping']
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 30s
+  valkey:
+    image: valkey/valkey:8.0
+    expose:
+      - "6379"
+    volumes:
+      - valkey_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'valkey-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   openmemory_data:
     driver: local
-  # Uncomment if using Valkey
-  # valkey_data:
-  #   driver: local
+  valkey_data:
+    driver: local
